@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.icuxika.com/"/>
-  <updated>2020-11-01T02:45:35.321Z</updated>
+  <updated>2020-12-06T03:09:27.209Z</updated>
   <id>http://blog.icuxika.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JavaFX应用安装包制作</title>
+    <link href="http://blog.icuxika.com/2020/11/01/JavaFX%E5%BA%94%E7%94%A8%E5%AE%89%E8%A3%85%E5%8C%85%E5%88%B6%E4%BD%9C/"/>
+    <id>http://blog.icuxika.com/2020/11/01/JavaFX应用安装包制作/</id>
+    <published>2020-11-01T02:56:11.000Z</published>
+    <updated>2020-12-06T03:09:27.209Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="JavaFX应用打包"><a href="#JavaFX应用打包" class="headerlink" title="JavaFX应用打包"></a>JavaFX应用打包</h1><blockquote><p>项目库版本</p><blockquote><p>gradle 6.5</p></blockquote><blockquote><p>Java 15</p></blockquote></blockquote><h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><blockquote><p><code>部分内容等待完善，后续补充GitHub例子</code></p></blockquote><h3 id="方式一-基于Java14开始可用的jpackage命令"><a href="#方式一-基于Java14开始可用的jpackage命令" class="headerlink" title="方式一 基于Java14开始可用的jpackage命令"></a>方式一 基于Java14开始可用的<code>jpackage</code>命令</h3><h4 id="应用插件"><a href="#应用插件" class="headerlink" title="应用插件"></a>应用插件</h4><blockquote><p><a href="https://badass-jlink-plugin.beryx.org/releases/latest/#introduction" target="_blank" rel="noopener">The Badass JLink Plugin</a></p></blockquote><h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><blockquote><figure class="highlight plain"><figcaption><span>version "2.20.0" ```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#### 配置</span><br></pre></td></tr></table></figure></blockquote><p>plugins {<br>    id ‘application’<br>    id ‘java’<br>    id ‘org.openjfx.javafxplugin’ version ‘0.0.9’<br>    id ‘org.beryx.jlink’ version ‘2.20.0’<br>    id ‘com.gluonhq.client-gradle-plugin’ version ‘0.1.35’<br>}</p><p>group ‘com.icuxika’<br>version ‘1.0.0’</p><p>repositories {<br>    mavenCentral()<br>}</p><p>application {<br>    mainClassName = ‘com.icuxika.MainApp’<br>}</p><p>dependencies {<br>    testCompile group: ‘junit’, name: ‘junit’, version: ‘4.12’<br>    implementation(‘com.squareup.okhttp3:okhttp:4.9.0’)<br>}</p><p>javafx {<br>    version(‘15’)<br>    modules(‘javafx.controls’, ‘javafx.fxml’, ‘javafx.web’, ‘javafx.swing’)<br>}</p><p>jlink {<br>    options.set(List.of(‘–strip-debug’, ‘–compress’, ‘2’, ‘–no-header-files’, ‘–no-man-pages’))</p><pre><code>launcher {    name = &apos;JavaFXSample&apos;    imageName.set(&apos;JavaFXSample&apos;)}imageZip.set(project.file(&quot;${project.buildDir}/image-zip/sample.zip&quot;))jpackage {    outputDir = &apos;sample-package&apos;    imageName = &apos;JavaFXSample&apos;    skipInstaller = false    installerName = &apos;sampleInstaller&apos;    appVersion = version.toString()    imageOptions = List.of(&quot;--icon&quot;, &quot;src/main/resources/application.ico&quot;)    if (org.gradle.internal.os.OperatingSystem.current().windows) {        installerOptions += [&apos;--win-per-user-install&apos;, &apos;--win-dir-chooser&apos;, &apos;--win-menu&apos;, &apos;--win-shortcut&apos;]    }}</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#### 使用</span><br></pre></td></tr></table></figure></p><p>./gradlew jpackage<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt; 说明：由于`jpackage`在Windows平台使用的是[WIX TOOLSET](https://wixtoolset.org/)构建安装包的，所以需要先安装该程序，然后将其`bin`目录添加到环境变量</span><br><span class="line"></span><br><span class="line">&gt; 问题：[WIX TOOLSET](https://wixtoolset.org/)目前在Windows上存在一个BUG，因为区域问题会导致最后选择语言文件时发生错误，而导致打包失败，因此需要将电脑区域和语言设置为美国和英语后，才能成功。</span><br><span class="line"></span><br><span class="line">#### 另一种构建方式</span><br><span class="line">&gt; 说明：第一步的漏洞修复之前，打包有些不方便，并且由于此漏洞的存在，安装包也只能是英文版本的，所以这里采用一种间接的方式。</span><br><span class="line"></span><br><span class="line">&gt; 步骤：`gradle jpackage`任务执行流程中，倒数第二步会调用`gradle jpackageImage`,此命令的作用时构建出JavaFX应用的exe程序及相关依赖环境，相当于一个解压缩的绿色版软件，实际上，若是不需要制作安装包，将此exe程序所在目录打包后，发送到其他电脑上解压缩即可使用。</span><br><span class="line"></span><br><span class="line">&gt; [Qt Installer Framework](https://doc.qt.io/qtinstallerframework/)，QT开源的安装包制作工具，[下载地址](https://download.qt.io/official_releases/qt-installer-framework/)，使用此工具可将`gradle jpackageImage`生成的exe程序及其依赖环境制作成安装包，并且安装程序相关页面都可以自由定制化。</span><br><span class="line"></span><br><span class="line">### 方式二 GraalVM</span><br><span class="line">#### 应用插件</span><br><span class="line">&gt; [Gluon Client plugin for Gradle](https://github.com/gluonhq/client-gradle-plugin)</span><br><span class="line">#### 依赖</span><br><span class="line">&gt; ``` id &apos;com.gluonhq.client-gradle-plugin&apos; version &apos;0.1.35&apos;</span><br></pre></td></tr></table></figure></p><h4 id="需要在settings-gradle配置插件仓库"><a href="#需要在settings-gradle配置插件仓库" class="headerlink" title="需要在settings.gradle配置插件仓库"></a>需要在<code>settings.gradle</code>配置插件仓库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">pluginManagement &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &quot;https://nexus.gluonhq.com/nexus/content/repositories/releases&quot;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        gradlePluginPortal()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">rootProject.name = ...</span><br></pre></td></tr></table></figure><h4 id="使用，此方式目前只支持Java11，所以需要在Java11环境下执行该命令"><a href="#使用，此方式目前只支持Java11，所以需要在Java11环境下执行该命令" class="headerlink" title="使用，此方式目前只支持Java11，所以需要在Java11环境下执行该命令"></a>使用，此方式目前只支持Java11，所以需要在Java11环境下执行该命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew nativeBuild</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;JavaFX应用打包&quot;&gt;&lt;a href=&quot;#JavaFX应用打包&quot; class=&quot;headerlink&quot; title=&quot;JavaFX应用打包&quot;&gt;&lt;/a&gt;JavaFX应用打包&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;项目库版本&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p
+      
+    
+    </summary>
+    
+      <category term="JavaFX" scheme="http://blog.icuxika.com/categories/JavaFX/"/>
+    
+    
+      <category term="JavaFX" scheme="http://blog.icuxika.com/tags/JavaFX/"/>
+    
+  </entry>
   
   <entry>
     <title>SSH使用记录</title>
