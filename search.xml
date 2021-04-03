@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>SSH使用记录</title>
+    <url>/2020/11/01/SSH%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -g -N -p 22 -R home.icuxika.com:5000:localhost:3389 icuxika@home.icuxika.com</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>说明：通过访问【home.icuxika.com】的 5000 端口来访问本机的 3389 端口。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -g -N -p 22 -R [远程ip]:[远程端口]:localhost:[本地端口] -i [id_rsa路径] [用户名]@[远程ip]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>完整写法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -g -N -p 22 -R [远程ip]:[远程端口]:localhost:[本地端口] [Host]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在【~/.ssh/config】文件中配置了Host</p>
+</blockquote>
+<h3 id="正向代理"><a href="#正向代理" class="headerlink" title="正向代理"></a>正向代理</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -C -f -N -g -p 22 -L [本地端口]:[localhost / 远程ip]:[本地端口 / 远程端口] [Host]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>说明：通过访问本地端口来访问【ip】</p>
+</blockquote>
+<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
+<li>g 允许远程主机连接到本地转发端口</li>
+<li>N 不要执行远程命令</li>
+<li>R 反向代理</li>
+<li>L 正向代理</li>
+<li>C 压缩请求数据</li>
+<li>f 请求ssh命令在执行之前转到后台</li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程珠玑</category>
+      </categories>
+      <tags>
+        <tag>编程珠玑</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Ubuntu下Bochs-2.6.9的安装</title>
     <url>/2019/09/26/Ubuntu%E4%B8%8BBochs-2-6-9%E7%9A%84%E5%AE%89%E8%A3%85/</url>
     <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install build-essential</span><br><span class="line">sudo apt-get install libx11-dev</span><br><span class="line">sudo apt-get install libxrandr-dev</span><br><span class="line">sudo apt-get install libgtk2.0-dev</span><br><span class="line">./configure --<span class="built_in">enable</span>-debugger --<span class="built_in">enable</span>-disasm --<span class="built_in">enable</span>-iodebug --<span class="built_in">enable</span>-x86-debugger --with-x --with-x11 LIBS=<span class="string">'-lX11'</span></span><br><span class="line">make</span><br><span class="line">cp bochs bochsdbg</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>]]></content>
@@ -51,6 +86,28 @@
       </categories>
       <tags>
         <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在vue3中使用axios（JavaScript版本）</title>
+    <url>/2021/04/03/%E5%9C%A8vue3%E4%B8%AD%E4%BD%BF%E7%94%A8axios%EF%BC%88JavaScript%E7%89%88%E6%9C%AC%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install axios</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><blockquote>
+<p>src/utils/axios/index.js</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 请求拦截、错误统一处理</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span></span><br><span class="line"><span class="keyword">import</span> &#123; message &#125; <span class="keyword">from</span> <span class="string">'ant-design-vue'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> instance = axios.create(&#123;</span><br><span class="line">    baseURL: <span class="string">'http://localhost:8080'</span>,</span><br><span class="line">    validateStatus: <span class="function"><span class="keyword">function</span> (<span class="params">status</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 此处决定请求响应status不满足该条件时进入error分支</span></span><br><span class="line">        <span class="keyword">return</span> status &gt;= <span class="number">200</span> &amp;&amp; status &lt; <span class="number">300</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    transformResponse: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(data)</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;,</span><br><span class="line">    headers: &#123;</span><br><span class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/json;charset=utf-8'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    timeout: <span class="number">1000</span> * <span class="number">5</span>, <span class="comment">// 超时时间,</span></span><br><span class="line">    responseType: <span class="string">'json'</span>,</span><br><span class="line">    responseEncoding: <span class="string">'utf8'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 请求拦截器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">instance.interceptors.request.use(<span class="function"><span class="keyword">function</span> (<span class="params">config</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 每次发送请求之前判断是否存在token，存在则添加到请求头中</span></span><br><span class="line">    <span class="keyword">const</span> token = <span class="string">''</span></span><br><span class="line">    token &amp;&amp; (config.headers.token = token)</span><br><span class="line">    <span class="keyword">return</span> config;</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 响应拦截器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">instance.interceptors.response.use(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(response)</span><br><span class="line">    <span class="keyword">return</span> response;</span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span> (<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(error.response)</span><br><span class="line">    <span class="keyword">if</span> (error.response) &#123;</span><br><span class="line">        <span class="comment">// 请求已经发出</span></span><br><span class="line">        <span class="keyword">switch</span> (error.response.status) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">401</span>: &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'未登录'</span>)</span><br><span class="line">                <span class="comment">// 跳转到登录页面</span></span><br><span class="line">                message.error(<span class="string">"未登录"</span>)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">403</span>: &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'登录过期，请重新登录'</span>)</span><br><span class="line">                <span class="comment">// 清除当前token</span></span><br><span class="line">                <span class="comment">// 进行提示并跳转到登录页面</span></span><br><span class="line">                message.error(<span class="string">"登录过期，请重新登录"</span>)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">404</span>: &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'请求地址错误'</span>)</span><br><span class="line">                message.error(<span class="string">"请求地址错误"</span>)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">default</span>: &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'其他错误'</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 断网、连接超时</span></span><br><span class="line">        message.error(<span class="string">"网络连接异常"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 不进行 return axios请求响应不会进入catch分支，但却会进入then分支，不过此时then分支的参数值是为空的</span></span><br><span class="line">    <span class="comment">// 返回后，catch分支中可以获取error信息</span></span><br><span class="line">    <span class="comment">// 实际上，对于未成功的请求响应，因为已在拦截器进行处理，所以实际使用时不用进行catch操作</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> instance;</span><br></pre></td></tr></table></figure>
+<h2 id="vue3全局属性设置"><a href="#vue3全局属性设置" class="headerlink" title="vue3全局属性设置"></a>vue3全局属性设置</h2><blockquote>
+<p>src/main.js</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'./utils/axios'</span></span><br><span class="line">app.config.globalProperties.$axios = axios</span><br></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="setup方法中"><a href="#setup方法中" class="headerlink" title="setup方法中"></a><code>setup</code>方法中</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;getCurrentInstance&#125; <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">const</span> $axios = getCurrentInstance().appContext.config.globalProperties.$axios</span><br></pre></td></tr></table></figure>
+<h3 id="methods方法中"><a href="#methods方法中" class="headerlink" title="methods方法中"></a><code>methods</code>方法中</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">this</span>.$axios</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>编程珠玑</category>
+      </categories>
+      <tags>
+        <tag>编程珠玑</tag>
       </tags>
   </entry>
   <entry>
@@ -145,41 +202,6 @@
       </categories>
       <tags>
         <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SSH使用记录</title>
-    <url>/2020/11/01/SSH%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -g -N -p 22 -R home.icuxika.com:5000:localhost:3389 icuxika@home.icuxika.com</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>说明：通过访问【home.icuxika.com】的 5000 端口来访问本机的 3389 端口。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -g -N -p 22 -R [远程ip]:[远程端口]:localhost:[本地端口] -i [id_rsa路径] [用户名]@[远程ip]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>完整写法</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -g -N -p 22 -R [远程ip]:[远程端口]:localhost:[本地端口] [Host]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>在【~/.ssh/config】文件中配置了Host</p>
-</blockquote>
-<h3 id="正向代理"><a href="#正向代理" class="headerlink" title="正向代理"></a>正向代理</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -C -f -N -g -p 22 -L [本地端口]:[localhost / 远程ip]:[本地端口 / 远程端口] [Host]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>说明：通过访问本地端口来访问【ip】</p>
-</blockquote>
-<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
-<li>g 允许远程主机连接到本地转发端口</li>
-<li>N 不要执行远程命令</li>
-<li>R 反向代理</li>
-<li>L 正向代理</li>
-<li>C 压缩请求数据</li>
-<li>f 请求ssh命令在执行之前转到后台</li>
-</ul>
-]]></content>
-      <categories>
-        <category>编程珠玑</category>
-      </categories>
-      <tags>
-        <tag>编程珠玑</tag>
       </tags>
   </entry>
 </search>
