@@ -1,0 +1,812 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://blog.icuxika.com</id>
+    <title>渺啊渺</title>
+    <subtitle>往无语来无杳</subtitle>
+    <icon>https://blog.icuxika.com/images/favicon.ico</icon>
+    <link href="https://blog.icuxika.com" />
+    <author>
+      <name>ICUXIKA</name>
+    </author>
+    <updated>2022-08-21T12:12:48.000Z</updated>
+    <category term="编程" />
+    <category term="数学" />
+    <entry>
+        <id>https://blog.icuxika.com/2022/08/21/programming/gradle/version-catalog/</id>
+        <title>Gradle 使用 version catalog 来完成依赖版本管理</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2022/08/21/programming/gradle/version-catalog/"/>
+        <content type="html">&lt;div class=&#34;note info&#34;&gt;
+&lt;p&gt;Vue.js 官方已经提供了新的脚手架项目以便使用 Vite 来搭建 Vue3 项目&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL3Z1ZWpzL2NyZWF0ZS12dWU=&#34;&gt;create-vue&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;相比于直接使用 Vite 提供的项目模板，此项目能够更方便的集成 Vue Router、Pinia、 Vitest、Cypress、Eslint 和 Prettier&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;note warning&#34;&gt;
+&lt;p&gt;本文并没有使用 create-vue 项目来生成项目，而是基于 Vite 提供的初始模板来完成&lt;/p&gt;
+&lt;/div&gt;
+&lt;h1 id=&#34;项目创建&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#项目创建&#34;&gt;#&lt;/a&gt; 项目创建&lt;/h1&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;yarn&lt;/span&gt; create vite&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+        <category term="编程" scheme="https://blog.icuxika.com/categories/programming/" />
+        <category term="Gradle" scheme="https://blog.icuxika.com/categories/programming/gradle/" />
+        <category term="Gradle" scheme="https://blog.icuxika.com/tags/Gradle/" />
+        <updated>2022-08-21T12:12:48.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://blog.icuxika.com/2022/08/20/programming/vue/vue-scaffold/</id>
+        <title>vue3 脚手架项目搭建</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2022/08/20/programming/vue/vue-scaffold/"/>
+        <content type="html">&lt;div class=&#34;note info&#34;&gt;
+&lt;p&gt;Vue.js 官方已经提供了新的脚手架项目以便使用 Vite 来搭建 Vue3 项目&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL3Z1ZWpzL2NyZWF0ZS12dWU=&#34;&gt;create-vue&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;相比于直接使用 Vite 提供的项目模板，此项目能够更方便的集成 Vue Router、Pinia、 Vitest、Cypress、Eslint 和 Prettier&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;note warning&#34;&gt;
+&lt;p&gt;本文并没有使用 create-vue 项目来生成项目，而是基于 Vite 提供的初始模板来完成&lt;/p&gt;
+&lt;/div&gt;
+&lt;h1 id=&#34;项目创建&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#项目创建&#34;&gt;#&lt;/a&gt; 项目创建&lt;/h1&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;yarn&lt;/span&gt; create vite&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h1 id=&#34;添加-jsx-支持&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#添加-jsx-支持&#34;&gt;#&lt;/a&gt; 添加 JSX 支持&lt;/h1&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;yarn&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;add&lt;/span&gt; -D @vitejs/plugin-vue-jsx&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;在  &lt;code&gt;vite.config.ts&lt;/code&gt;  文件应用插件&lt;/p&gt;
+&lt;figure class=&#34;highlight typescript&#34;&gt;&lt;figcaption data-lang=&#34;typescript&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; vueJsx &lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#34;@vitejs/plugin-vue-jsx&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;plugins&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;vue&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;vueJsx&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h1 id=&#34;配置-eslint&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#配置-eslint&#34;&gt;#&lt;/a&gt; 配置 Eslint&lt;/h1&gt;
+&lt;h1 id=&#34;配置-prettier&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#配置-prettier&#34;&gt;#&lt;/a&gt; 配置 Prettier&lt;/h1&gt;
+&lt;h1 id=&#34;初始化为-git-仓库&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#初始化为-git-仓库&#34;&gt;#&lt;/a&gt; 初始化为 Git 仓库&lt;/h1&gt;
+&lt;h1 id=&#34;配置-commitlint&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#配置-commitlint&#34;&gt;#&lt;/a&gt; 配置 commitlint&lt;/h1&gt;
+&lt;h1 id=&#34;配置-commitizen&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#配置-commitizen&#34;&gt;#&lt;/a&gt; 配置 Commitizen&lt;/h1&gt;
+&lt;h1 id=&#34;配置-husky&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#配置-husky&#34;&gt;#&lt;/a&gt; 配置 husky&lt;/h1&gt;
+&lt;h1 id=&#34;待整理&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#待整理&#34;&gt;#&lt;/a&gt; 待整理&lt;/h1&gt;
+&lt;p&gt;yarn create vite&lt;br /&gt;
+yarn add -D @vitejs/plugin-vue-jsx&lt;br /&gt;
+// 初始化 ESLint &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9lc2xpbnQub3JnL2RvY3MvbGF0ZXN0L3VzZXItZ3VpZGUvZ2V0dGluZy1zdGFydGVk&#34;&gt;https://eslint.org/docs/latest/user-guide/getting-started&lt;/span&gt; 主要用于发现代码的错误&lt;br /&gt;
+ npm init @eslint/config&lt;br /&gt;
+// 选择 To check syntax and find problems&lt;br /&gt;
+// 会添加 @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-plugin-vue 共 4 个依赖项&lt;/p&gt;
+&lt;p&gt;// 应用 Prettier &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL3ByZXR0aWVyL2VzbGludC1wbHVnaW4tcHJldHRpZXI=&#34;&gt;https://github.com/prettier/eslint-plugin-prettier&lt;/span&gt;  主要用于格式化代码&lt;br /&gt;
+ yarn add -D eslint-plugin-prettier&lt;br /&gt;
+yarn add -D prettier --exact&lt;br /&gt;
+yarn add -D eslint-config-prettier&lt;/p&gt;
+&lt;p&gt;// 应用 @vitejs/plugin-vue-jsx 插件提供 Vue 3 JSX 支持&lt;br /&gt;
+ vite.config.ts&lt;br /&gt;
+import vueJsx from &amp;quot;@vitejs/plugin-vue-jsx&amp;quot;;&lt;br /&gt;
+plugins: [vue(), vueJsx()];&lt;/p&gt;
+&lt;p&gt;//eslint 配置 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9lc2xpbnQudnVlanMub3JnL3VzZXItZ3VpZGUvI2luc3RhbGxhdGlvbg==&#34;&gt;https://eslint.vuejs.org/user-guide/#installation&lt;/span&gt;&lt;br /&gt;
+ 在 .eslintrc.json 设置 eslint 规则并&lt;br /&gt;
+配置 &amp;quot;plugin:vue/vue3-recommended&amp;quot;&lt;br /&gt;
+配置&amp;quot;plugin:prettier/recommended&amp;quot; 来自 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL3ByZXR0aWVyL2VzbGludC1wbHVnaW4tcHJldHRpZXI=&#34;&gt;https://github.com/prettier/eslint-plugin-prettier&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;创建 .prettierrc.json 设置 prettierrc 规则&lt;/p&gt;
+&lt;p&gt;// husky&lt;br /&gt;
+git init // 使用 husky 的前提是当前目录是一个 git 仓库&lt;br /&gt;
+ yarn add -D husky&lt;br /&gt;
+npm set-script prepare &amp;quot;husky install&amp;quot;&lt;br /&gt;
+yarn // 再次执行 yarn 会自动触发此命令&lt;/p&gt;
+&lt;p&gt;// commitlint&lt;br /&gt;
+yarn add -D @commitlint/config-conventional @commitlint/cli&lt;/p&gt;
+&lt;p&gt;// commitizen&lt;br /&gt;
+yarn add -D commitizen&lt;br /&gt;
+npx commitizen init cz-conventional-changelog --save-dev --save-exact&lt;/p&gt;
+&lt;p&gt;vue-router, pinia, vitest ...&lt;/p&gt;
+</content>
+        <category term="编程" scheme="https://blog.icuxika.com/categories/programming/" />
+        <category term="Vue.js" scheme="https://blog.icuxika.com/categories/programming/vue/" />
+        <category term="Vue.js" scheme="https://blog.icuxika.com/tags/Vue-js/" />
+        <category term="Vite" scheme="https://blog.icuxika.com/tags/Vite/" />
+        <updated>2022-08-19T16:04:48.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://blog.icuxika.com/2021/08/25/Spring-Boot-%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C/</id>
+        <title>Spring Boot 参数校验</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2021/08/25/Spring-Boot-%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C/"/>
+        <content type="html">&lt;h4 id=&#34;版本&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#版本&#34;&gt;#&lt;/a&gt; 版本&lt;/h4&gt;
+&lt;p&gt;&lt;code&gt;2.5.2&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&#34;依赖&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#依赖&#34;&gt;#&lt;/a&gt; 依赖&lt;/h4&gt;
+&lt;figure class=&#34;highlight kotlin&#34;&gt;&lt;figcaption data-lang=&#34;kotlin&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;implementation &#39;org&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;springframework&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;boot&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;spring&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;boot&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;starter&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;web&#39;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;implementation &#39;org&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;springframework&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;boot&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt;spring&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;boot&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;starter&lt;span class=&#34;token operator&#34;&gt;-&lt;/span&gt;validation&#39;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h4 id=&#34;全局异常配置&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#全局异常配置&#34;&gt;#&lt;/a&gt; 全局异常配置&lt;/h4&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;figcaption data-lang=&#34;java&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token annotation punctuation&#34;&gt;@ControllerAdvice&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ExceptionHandlerAdvice&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     * 全局异常兜底处理&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ExceptionHandler&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Exception&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ResponseBody&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;handleException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Exception&lt;/span&gt; e&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; apiData &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setCode&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;HttpStatus&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;INTERNAL_SERVER_ERROR&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setMsg&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;e&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getMessage&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; apiData&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;16&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;17&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     * 业务异常消息&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;18&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;19&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ExceptionHandler&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;ServiceException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;20&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ResponseBody&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;21&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;handleException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;ServiceException&lt;/span&gt; e&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;22&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; apiData &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;23&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setCode&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;e&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getStatusCode&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;24&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setMsg&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;e&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getMessage&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;25&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; apiData&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;26&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;27&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;28&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;29&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     * [@RequestParam] 注解的参数不存在&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;30&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;31&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ExceptionHandler&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;MissingServletRequestParameterException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;32&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ResponseBody&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;33&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;handleException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;MissingServletRequestParameterException&lt;/span&gt; e&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;34&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; apiData &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;35&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setCode&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;HttpStatus&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;INTERNAL_SERVER_ERROR&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;36&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setMsg&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;MessageFormat&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;format&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;缺少参数&amp;#123;0&amp;#125;，类型[&amp;#123;1&amp;#125;]&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; e&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getParameterName&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; e&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getParameterType&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;37&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; apiData&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;38&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;39&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;40&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;41&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     * [POST/GET] 单参数验证未通过，必须在 Controller 类上加上 @Validated 注解，否则在参数上无效&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;42&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;43&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ExceptionHandler&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;ConstraintViolationException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;44&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ResponseBody&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;45&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;handleException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;ConstraintViolationException&lt;/span&gt; e&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;46&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; apiData &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;47&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setCode&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;HttpStatus&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;INTERNAL_SERVER_ERROR&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;48&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setMsg&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;e&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getMessage&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;49&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; apiData&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;50&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;51&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;52&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;53&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     * [GET] 对象参数验证未通过&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;54&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;55&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ExceptionHandler&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;BindException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;56&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ResponseBody&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;57&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;handleException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;BindException&lt;/span&gt; e&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;58&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; apiData &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;59&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setCode&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;HttpStatus&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;INTERNAL_SERVER_ERROR&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;60&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setMsg&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;parseErrors&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;e&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getBindingResult&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;toString&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;61&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; apiData&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;62&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;63&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;64&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;65&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     * [POST] 对象参数验证未通过&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;66&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;     */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;67&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ExceptionHandler&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;MethodArgumentNotValidException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;68&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token annotation punctuation&#34;&gt;@ResponseBody&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;69&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;handleException&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;MethodArgumentNotValidException&lt;/span&gt; e&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;70&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Void&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; apiData &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;ApiData&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;71&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setCode&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;HttpStatus&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;INTERNAL_SERVER_ERROR&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;value&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;72&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        apiData&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;setMsg&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;parseErrors&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;e&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getBindingResult&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;toString&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;73&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; apiData&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;74&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;75&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;76&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;Map&lt;/span&gt;&lt;span class=&#34;token generics&#34;&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;parseErrors&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;BindingResult&lt;/span&gt; bindingResult&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;77&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; bindingResult&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getAllErrors&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;stream&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;collect&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;Collectors&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;toMap&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;objectError &lt;span class=&#34;token operator&#34;&gt;-&gt;&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token class-name&#34;&gt;FieldError&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; objectError&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getField&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; objectError &lt;span class=&#34;token operator&#34;&gt;-&gt;&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;78&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;objectError&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getDefaultMessage&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;79&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; objectError&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;getDefaultMessage&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;80&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;81&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#34;参数校验失败&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;82&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;83&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;84&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;85&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h4 id=&#34;使用&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#使用&#34;&gt;#&lt;/a&gt; 使用&lt;/h4&gt;
+&lt;h5 id=&#34;单参数验证&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#单参数验证&#34;&gt;#&lt;/a&gt; 单参数验证&lt;/h5&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;figcaption data-lang=&#34;java&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; * 必须在 Controller 类上加上 @Validated 注解，加在参数上无效&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token annotation punctuation&#34;&gt;@RequestMapping&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;validate&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;validate&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token annotation punctuation&#34;&gt;@RequestParam&lt;/span&gt; &lt;span class=&#34;token annotation punctuation&#34;&gt;@Min&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;Long&lt;/span&gt; id&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token class-name&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;out&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;id&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;blockquote&gt;
+&lt;p&gt;如果参数不加  &lt;code&gt;@RequestParam&lt;/code&gt;  注解，前端请求未携带  &lt;code&gt;id&lt;/code&gt;  的话，会打印出  &lt;code&gt;null&lt;/code&gt; ，携带 &lt;code&gt;id&lt;/code&gt;  的话，会校验参数是否符合条件（会触发 &lt;code&gt;ConstraintViolationException&lt;/code&gt; ），但是如果加了  &lt;code&gt;@NotNull&lt;/code&gt;  注解的话，也能拦截到为 &lt;code&gt;null&lt;/code&gt;  的情况，会触发 &lt;code&gt;ConstraintViolationException&lt;/code&gt; 。如果参数加了 &lt;code&gt;@RequestParam&lt;/code&gt;  注解的话，前端请求未携带  &lt;code&gt;id&lt;/code&gt;  的话，会触发  &lt;code&gt;MissingServletRequestParameterException&lt;/code&gt;  。 &lt;code&gt;@Validated&lt;/code&gt;  注解必须要加在  &lt;code&gt;Controller&lt;/code&gt;  类上，否则校验无效。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;post-对象&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#post-对象&#34;&gt;#&lt;/a&gt; POST 对象&lt;/h5&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;figcaption data-lang=&#34;java&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; * 必须在参数上加上注解 @Validated，类上的无效&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token annotation punctuation&#34;&gt;@PostMapping&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;validatePost&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;validatePost&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token annotation punctuation&#34;&gt;@RequestBody&lt;/span&gt; &lt;span class=&#34;token annotation punctuation&#34;&gt;@Validated&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;Parameter&lt;/span&gt; parameter&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token class-name&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;out&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;parameter&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;toString&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;@Validated&lt;/code&gt;  注解必须要加在参数上，否则即使  &lt;code&gt;Controller&lt;/code&gt;  类上加了也无效。 &lt;code&gt;@RequestBody&lt;/code&gt;  注解，加了的话， &lt;code&gt;MethodArgumentNotValidException&lt;/code&gt;  会获取到所有属性的校验错误信息，未加的话，会触发  &lt;code&gt;BindException&lt;/code&gt;  ，只会知道第一个未满足校验条件的属性报错信息。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;get-对象&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#get-对象&#34;&gt;#&lt;/a&gt; GET 对象&lt;/h5&gt;
+&lt;figure class=&#34;highlight java&#34;&gt;&lt;figcaption data-lang=&#34;java&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; * 必须在参数上加上注解 @Validated，类上的无效&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token annotation punctuation&#34;&gt;@GetMapping&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;validateGet&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;validateGet&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token annotation punctuation&#34;&gt;@Validated&lt;/span&gt; &lt;span class=&#34;token class-name&#34;&gt;Parameter&lt;/span&gt; parameter&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token class-name&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;out&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;parameter&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;@Validated&lt;/code&gt;  注解必须要加在参数上，否则即使  &lt;code&gt;Controller&lt;/code&gt;  类上加了也无效。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;待补充&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#待补充&#34;&gt;#&lt;/a&gt; 待补充&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;分组校验的内容 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zOTg1NzAzODE=&#34;&gt;Spring Boot 参数校验以及分组校验的使用&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;总结&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#总结&#34;&gt;#&lt;/a&gt; 总结&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;单参数加  &lt;code&gt;@RequestParam&lt;/code&gt;  ， &lt;code&gt;@Validated&lt;/code&gt;  加在类上&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;POST&lt;/code&gt;   对象加  &lt;code&gt;@RequestBody&lt;/code&gt;  ，  &lt;code&gt;@Validated&lt;/code&gt;  加在参数上&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GET&lt;/code&gt;  对象不加  &lt;code&gt;@RequestBody&lt;/code&gt;  ， &lt;code&gt;@Validated&lt;/code&gt;  加在参数上&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="Java" scheme="https://blog.icuxika.com/categories/Java/" />
+        <category term="Spring Boot" scheme="https://blog.icuxika.com/tags/Spring-Boot/" />
+        <updated>2021-08-25T03:21:32.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://blog.icuxika.com/2021/05/08/Markdown%E6%96%87%E6%A1%A3%E8%BD%ACPDF%EF%BC%88%E4%B8%AD%E6%96%87%EF%BC%89%E8%AE%B0%E5%BD%95/</id>
+        <title>Markdown文档转PDF（中文）记录</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2021/05/08/Markdown%E6%96%87%E6%A1%A3%E8%BD%ACPDF%EF%BC%88%E4%B8%AD%E6%96%87%EF%BC%89%E8%AE%B0%E5%BD%95/"/>
+        <content type="html">&lt;h4 id=&#34;安装latex&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#安装latex&#34;&gt;#&lt;/a&gt; 安装 &lt;code&gt;LaTeX&lt;/code&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;brew install --cask basictex
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;配置环境变量&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#配置环境变量&#34;&gt;#&lt;/a&gt; 配置环境变量&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;export PATH=/Library/TeX/texbin:$PATH
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;尝试此模板时安装的-eisvogel-相关依赖&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#尝试此模板时安装的-eisvogel-相关依赖&#34;&gt;#&lt;/a&gt; 尝试此模板时安装的 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL1dhbmRtYWxmYXJiZS9wYW5kb2MtbGF0ZXgtdGVtcGxhdGUuZ2l0&#34;&gt;eisvogel&lt;/span&gt; 相关依赖&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;sudo tlmgr install adjustbox babel-german background bidi collectbox csquotes everypage filehook footmisc footnotebackref framed fvextra letltxmacro ly1 mdframed mweights needspace pagecolor sourcecodepro sourcesanspro titling ucharcat ulem unicode-math upquote xecjk xurl zref
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;最关键的依赖配置cjkmainfont需要这个依赖实际上提示的错误是-latex-error-file-ctexhooksty-not-found&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#最关键的依赖配置cjkmainfont需要这个依赖实际上提示的错误是-latex-error-file-ctexhooksty-not-found&#34;&gt;#&lt;/a&gt; 最关键的依赖，配置 &lt;code&gt;CJKmainfont&lt;/code&gt;  需要这个依赖，实际上提示的错误是 &lt;code&gt;! LaTeX Error: File &lt;/code&gt; ctexhook.sty&#39; not found.`&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;sudo tlmgr install ctex --repository http://mirrors.aliyun.com/CTAN/systems/texlive/tlnet/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;此处字体自行更换配置了cjkmainfont中文长行自动换行才正常&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#此处字体自行更换配置了cjkmainfont中文长行自动换行才正常&#34;&gt;#&lt;/a&gt; 此处字体自行更换，配置了 &lt;code&gt;CJKmainfont&lt;/code&gt;  中文长行自动换行才正常&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;pandoc demo.md -o ~/Downloads/demo.pdf --pdf-engine=xelatex -V mainfont=&#39;PingFang SC&#39; -V sansfont=&#39;PingFang SC&#39; -V CJKmainfont=&amp;quot;PingFang SC&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;使用eisvogel&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#使用eisvogel&#34;&gt;#&lt;/a&gt; 使用 &lt;code&gt;eisvogel&lt;/code&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;pandoc demo.md -o ~/Downloads/demo.pdf --pdf-engine=xelatex -V mainfont=&#39;PingFang SC&#39; -V sansfont=&#39;PingFang SC&#39; -V CJKmainfont=&amp;quot;PingFang SC&amp;quot; --template=eisvogel.tex
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+        <category term="编程珠玑" scheme="https://blog.icuxika.com/categories/%E7%BC%96%E7%A8%8B%E7%8F%A0%E7%8E%91/" />
+        <category term="编程珠玑" scheme="https://blog.icuxika.com/tags/%E7%BC%96%E7%A8%8B%E7%8F%A0%E7%8E%91/" />
+        <updated>2021-05-08T13:29:19.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://blog.icuxika.com/2021/04/03/%E5%9C%A8vue3%E4%B8%AD%E4%BD%BF%E7%94%A8axios%EF%BC%88JavaScript%E7%89%88%E6%9C%AC%EF%BC%89/</id>
+        <title>在vue3中使用axios（JavaScript版本）</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2021/04/03/%E5%9C%A8vue3%E4%B8%AD%E4%BD%BF%E7%94%A8axios%EF%BC%88JavaScript%E7%89%88%E6%9C%AC%EF%BC%89/"/>
+        <content type="html">&lt;h2 id=&#34;安装&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#安装&#34;&gt;#&lt;/a&gt; 安装&lt;/h2&gt;
+&lt;figure class=&#34;highlight shell&#34;&gt;&lt;figcaption data-lang=&#34;Bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;npm&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;install&lt;/span&gt; axios&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h2 id=&#34;配置&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#配置&#34;&gt;#&lt;/a&gt; 配置&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;src/utils/axios/index.js&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;figcaption data-lang=&#34;javascript&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; * 请求拦截、错误统一处理&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; axios &lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#39;axios&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt; message &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#39;ant-design-vue&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;const&lt;/span&gt; instance &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; axios&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;create&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token literal-property property&#34;&gt;baseURL&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#39;http://localhost:8080&#39;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token function-variable function&#34;&gt;validateStatus&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token parameter&#34;&gt;status&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token comment&#34;&gt;// 此处决定请求响应 status 不满足该条件时进入 error 分支&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; status &lt;span class=&#34;token operator&#34;&gt;&gt;=&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;200&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; status &lt;span class=&#34;token operator&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;300&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token function-variable function&#34;&gt;transformResponse&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token parameter&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        console&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;data&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; data&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;16&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;17&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token literal-property property&#34;&gt;headers&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;18&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token string-property property&#34;&gt;&#39;Content-Type&#39;&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#39;application/json;charset=utf-8&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;19&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;20&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token literal-property property&#34;&gt;timeout&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1000&lt;/span&gt; &lt;span class=&#34;token operator&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token comment&#34;&gt;// 超时时间，&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;21&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token literal-property property&#34;&gt;responseType&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#39;json&#39;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;22&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token literal-property property&#34;&gt;responseEncoding&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#39;utf8&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;23&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;24&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;25&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;26&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; * 请求拦截器&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;27&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;28&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;instance&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;interceptors&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;request&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;use&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token parameter&#34;&gt;config&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;29&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;// 每次发送请求之前判断是否存在 token，存在则添加到请求头中&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;30&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;const&lt;/span&gt; token &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#39;&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;31&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    token &lt;span class=&#34;token operator&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;config&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;headers&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;token &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; token&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;32&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; config&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;33&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token parameter&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;34&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; Promise&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;reject&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;error&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;35&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;36&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;37&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token comment&#34;&gt;/**&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;38&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; * 响应拦截器&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;39&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; */&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;40&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;instance&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;interceptors&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;response&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;use&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token keyword&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token parameter&#34;&gt;response&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;41&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    console&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;response&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;42&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; response&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;43&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token parameter&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;44&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    console&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;error&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;response&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;45&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;error&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;response&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;46&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token comment&#34;&gt;// 请求已经发出&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;47&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token keyword&#34;&gt;switch&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;error&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;response&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;status&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;48&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;401&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;49&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                console&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#39;未登录&#39;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;50&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                &lt;span class=&#34;token comment&#34;&gt;// 跳转到登录页面&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;51&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                message&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;未登录&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;52&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;53&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;54&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;55&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;403&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;56&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                console&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#39;登录过期，请重新登录&#39;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;57&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                &lt;span class=&#34;token comment&#34;&gt;// 清除当前 token&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;58&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                &lt;span class=&#34;token comment&#34;&gt;// 进行提示并跳转到登录页面&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;59&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                message&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;登录过期，请重新登录&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;60&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;61&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;62&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;63&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token keyword&#34;&gt;case&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;404&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;64&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                console&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#39;请求地址错误&#39;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;65&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                message&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;请求地址错误&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;66&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                &lt;span class=&#34;token keyword&#34;&gt;break&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;67&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;68&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;69&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token keyword&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;70&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                console&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#39;其他错误&#39;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;71&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;            &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;72&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;73&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;74&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        &lt;span class=&#34;token comment&#34;&gt;// 断网、连接超时&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;75&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;        message&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;error&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;网络连接异常&#34;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;76&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;77&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;// 不进行 return axios 请求响应不会进入 catch 分支，但却会进入 then 分支，不过此时 then 分支的参数值是为空的&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;78&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;// 返回后，catch 分支中可以获取 error 信息&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;79&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token comment&#34;&gt;// 实际上，对于未成功的请求响应，因为已在拦截器进行处理，所以实际使用时不用进行 catch 操作&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;80&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;    &lt;span class=&#34;token keyword&#34;&gt;return&lt;/span&gt; Promise&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;token function&#34;&gt;reject&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;error&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;81&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;82&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;83&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;default&lt;/span&gt; instance&lt;span class=&#34;token punctuation&#34;&gt;;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h2 id=&#34;vue3全局属性设置&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#vue3全局属性设置&#34;&gt;#&lt;/a&gt; vue3 全局属性设置&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;src/main.js&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;figcaption data-lang=&#34;javascript&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; axios &lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#39;./utils/axios&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;app&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;config&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;globalProperties&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;$axios &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; axios&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h2 id=&#34;使用&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#使用&#34;&gt;#&lt;/a&gt; 使用&lt;/h2&gt;
+&lt;h3 id=&#34;setup方法中&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#setup方法中&#34;&gt;#&lt;/a&gt;  &lt;code&gt;setup&lt;/code&gt;  方法中&lt;/h3&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;figcaption data-lang=&#34;javascript&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;&amp;#123;&lt;/span&gt;getCurrentInstance&lt;span class=&#34;token punctuation&#34;&gt;&amp;#125;&lt;/span&gt; &lt;span class=&#34;token keyword&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;token string&#34;&gt;&#39;vue&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;const&lt;/span&gt; $axios &lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;getCurrentInstance&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;appContext&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;config&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;globalProperties&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;$axios&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h3 id=&#34;methods方法中&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#methods方法中&#34;&gt;#&lt;/a&gt;  &lt;code&gt;methods&lt;/code&gt;  方法中&lt;/h3&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;figcaption data-lang=&#34;javascript&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token keyword&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;.&lt;/span&gt;$axios&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+        <category term="编程珠玑" scheme="https://blog.icuxika.com/categories/%E7%BC%96%E7%A8%8B%E7%8F%A0%E7%8E%91/" />
+        <category term="编程珠玑" scheme="https://blog.icuxika.com/tags/%E7%BC%96%E7%A8%8B%E7%8F%A0%E7%8E%91/" />
+        <updated>2021-04-03T03:30:28.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://blog.icuxika.com/2020/11/01/SSH%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/</id>
+        <title>SSH使用记录</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2020/11/01/SSH%E4%BD%BF%E7%94%A8%E8%AE%B0%E5%BD%95/"/>
+        <content type="html">&lt;h3 id=&#34;反向代理&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#反向代理&#34;&gt;#&lt;/a&gt; 反向代理&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;ssh -g -N -p 22 -R home.icuxika.com:5000:localhost:3389 icuxika@home.icuxika.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;说明：通过访问【&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL2hvbWUuaWN1eGlrYS5jb20=&#34;&gt;home.icuxika.com&lt;/span&gt;】的 5000 端口来访问本机的 3389 端口。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;ssh -g -N -p 22 -R [远程ip]:[远程端口]:localhost:[本地端口] -i [id_rsa路径] [用户名]@[远程ip]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;完整写法&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;ssh -g -N -p 22 -R [远程ip]:[远程端口]:localhost:[本地端口] [Host]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在【~/.ssh/config】文件中配置了 Host&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;正向代理&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#正向代理&#34;&gt;#&lt;/a&gt; 正向代理&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;ssh -C -f -N -g -p 22 -L [本地端口]:[localhost / 远程ip]:[本地端口 / 远程端口] [Host]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;说明：通过访问本地端口来访问【ip】&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;参数说明&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#参数说明&#34;&gt;#&lt;/a&gt; 参数说明&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;g 允许远程主机连接到本地转发端口&lt;/li&gt;
+&lt;li&gt;N 不要执行远程命令&lt;/li&gt;
+&lt;li&gt;R 反向代理&lt;/li&gt;
+&lt;li&gt;L 正向代理&lt;/li&gt;
+&lt;li&gt;C 压缩请求数据&lt;/li&gt;
+&lt;li&gt;f 请求 ssh 命令在执行之前转到后台&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+        <category term="编程珠玑" scheme="https://blog.icuxika.com/categories/%E7%BC%96%E7%A8%8B%E7%8F%A0%E7%8E%91/" />
+        <category term="编程珠玑" scheme="https://blog.icuxika.com/tags/%E7%BC%96%E7%A8%8B%E7%8F%A0%E7%8E%91/" />
+        <updated>2020-11-01T02:20:21.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://blog.icuxika.com/2019/12/23/%E5%9C%A8%E5%89%8D%E5%90%8E%E7%AB%AF%E4%B8%AD%E5%BA%94%E7%94%A8AES%E5%92%8CRSA/</id>
+        <title>在前后端中应用AES和RSA</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2019/12/23/%E5%9C%A8%E5%89%8D%E5%90%8E%E7%AB%AF%E4%B8%AD%E5%BA%94%E7%94%A8AES%E5%92%8CRSA/"/>
+        <content type="html">&lt;h2 id=&#34;java端&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#java端&#34;&gt;#&lt;/a&gt; Java 端&lt;/h2&gt;
+&lt;h3 id=&#34;添加如下依赖&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#添加如下依赖&#34;&gt;#&lt;/a&gt; 添加如下依赖&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;commons-codec&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;commons-codec&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.13&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.bouncycastle&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;bcprov-jdk15on&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.64&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;aescoder&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#aescoder&#34;&gt;#&lt;/a&gt; AESCoder&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;public class AESCoder &amp;#123;
+
+    /**
+     * 密钥算法
+     */
+    public static final String KEY_ALGORITHM = &amp;quot;AES&amp;quot;;
+
+    /**
+     * 加密/解密算法 /工作模式 /填充方式
+     */
+    public static final String CIPHER_ALGORITHM = &amp;quot;AES/ECB/PKCS5Padding&amp;quot;;
+
+    /**
+     * 转换密钥
+     *
+     * @param key 二进制密钥
+     * @return Key 密钥
+     */
+    private static Key toKey(byte[] key) &amp;#123;
+        SecretKey secretKey = new SecretKeySpec(key, KEY_ALGORITHM);
+        return secretKey;
+    &amp;#125;
+
+    /**
+     * 解密
+     *
+     * @param data 密文
+     * @param key  密钥
+     * @return byte[] 原文
+     * @throws Exception
+     */
+    public static byte[] decrypt(byte[] data, byte[] key) throws Exception &amp;#123;
+        Key k = toKey(key);
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, k);
+        return cipher.doFinal(data);
+    &amp;#125;
+
+    /**
+     * 加密
+     *
+     * @param data 原文
+     * @param key  密钥
+     * @return byte[] 密文
+     * @throws Exception
+     */
+    public static byte[] encrypt(byte[] data, byte[] key) throws Exception &amp;#123;
+        Key k = toKey(key);
+        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, k);
+        return cipher.doFinal(data);
+    &amp;#125;
+
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;aesutil&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#aesutil&#34;&gt;#&lt;/a&gt; AESUtil&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;public class AESUtil &amp;#123;
+
+    /**
+     * AES 加密
+     *
+     * @param plainText 原文
+     * @param key       密钥
+     * @return String 密文
+     * @throws Exception
+     */
+    public static String AESEncrypt(String plainText, String key) throws Exception &amp;#123;
+        return Base64.encodeBase64String(AESCoder.encrypt(plainText.getBytes(StandardCharsets.UTF_8), key.getBytes(StandardCharsets.UTF_8)));
+    &amp;#125;
+
+    /**
+     * AES 解密
+     *
+     * @param cipherText 密文
+     * @param key        密钥
+     * @return String 原文
+     * @throws Exception
+     */
+    public static String AESDecrypt(String cipherText, String key) throws Exception &amp;#123;
+        return new String(AESCoder.decrypt(Base64.decodeBase64(cipherText), key.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+    &amp;#125;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;rsacoder&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#rsacoder&#34;&gt;#&lt;/a&gt; RSACoder&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;public class RSACoder &amp;#123;
+
+    /**
+     * 密钥算法
+     */
+    public static final String KEY_ALGORITHM = &amp;quot;RSA&amp;quot;;
+
+    /**
+     * 私钥解密
+     *
+     * @param data 密文
+     * @param key  私钥
+     * @return byte[] 原文
+     * @throws Exception
+     */
+    public static byte[] decryptByPrivateKey(byte[] data, byte[] key) throws Exception &amp;#123;
+        PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(makePrivateKey(key));
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        return cipher.doFinal(data);
+    &amp;#125;
+
+    /**
+     * 公钥加密
+     *
+     * @param data 原文
+     * @param key  公钥
+     * @return byte[] 密文
+     * @throws Exception
+     */
+    public static byte[] encryptByPublicKey(byte[] data, byte[] key) throws Exception &amp;#123;
+        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(key);
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        return cipher.doFinal(data);
+    &amp;#125;
+
+    /**
+     * 公钥解密
+     *
+     * @param data 密文
+     * @param key  公钥
+     * @return byte[] 原文
+     * @throws Exception
+     */
+    public static byte[] decryptByPublicKey(byte[] data, byte[] key) throws Exception &amp;#123;
+        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(key);
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.DECRYPT_MODE, publicKey);
+        return cipher.doFinal(data);
+    &amp;#125;
+
+    /**
+     * 私钥加密
+     *
+     * @param data 原文
+     * @param key  私钥
+     * @return byte[] 密文
+     * @throws Exception
+     */
+    public static byte[] encryptByPrivateKey(byte[] data, byte[] key) throws Exception &amp;#123;
+        PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(makePrivateKey(key));
+        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
+        PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+        return cipher.doFinal(data);
+    &amp;#125;
+
+    /**
+     * 对私钥进行PKCS8格式化
+     *
+     * @param data 原始钥匙
+     * @return byte[] 格式化后的私钥
+     * @throws Exception
+     */
+    public static byte[] makePrivateKey(byte[] data) throws Exception &amp;#123;
+        ASN1EncodableVector asn1EncodableVector1 = new ASN1EncodableVector();
+        asn1EncodableVector1.add(new ASN1Integer(0));
+        ASN1EncodableVector asn1EncodableVector2 = new ASN1EncodableVector();
+        asn1EncodableVector2.add(new ASN1ObjectIdentifier(PKCSObjectIdentifiers.rsaEncryption.getId()));
+        asn1EncodableVector2.add(DERNull.INSTANCE);
+        asn1EncodableVector1.add(new DERSequence(asn1EncodableVector2));
+        asn1EncodableVector1.add(new DEROctetString(data));
+        ASN1Sequence sequence = new DERSequence(asn1EncodableVector1);
+        return sequence.getEncoded(&amp;quot;DER&amp;quot;);
+    &amp;#125;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;rsautil&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#rsautil&#34;&gt;#&lt;/a&gt; RSAUtil&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;public class RSAUtil &amp;#123;
+
+    /**
+     * RSA 公钥加密
+     *
+     * @param plainText 原文
+     * @param key       公钥
+     * @return String 密文
+     * @throws Exception
+     */
+    public static String RSAEncryptByPublicKey(String plainText, String key) throws Exception &amp;#123;
+        return Base64.encodeBase64String(RSACoder.encryptByPublicKey(plainText.getBytes(StandardCharsets.UTF_8), Base64.decodeBase64(key)));
+    &amp;#125;
+
+    /**
+     * RSA 私钥解密
+     *
+     * @param cipherText 密文
+     * @param key        私钥
+     * @return String 原文
+     * @throws Exception
+     */
+    public static String RSADecryptByPrivateKey(String cipherText, String key) throws Exception &amp;#123;
+        return new String(RSACoder.decryptByPrivateKey(Base64.decodeBase64(cipherText), Base64.decodeBase64(key)), StandardCharsets.UTF_8);
+    &amp;#125;
+
+    /**
+     * RSA 私钥加密
+     *
+     * @param plainText 原文
+     * @param key       私钥
+     * @return String 密文
+     * @throws Exception
+     */
+    public static String RSAEncryptByPrivateKey(String plainText, String key) throws Exception &amp;#123;
+        return Base64.encodeBase64String(RSACoder.encryptByPrivateKey(plainText.getBytes(StandardCharsets.UTF_8), Base64.decodeBase64(key)));
+    &amp;#125;
+
+    /**
+     * RSA 公钥解密
+     *
+     * @param cipherText 密文
+     * @param key        公钥
+     * @return String 原文
+     * @throws Exception
+     */
+    public static String RSADecryptByPublicKey(String cipherText, String key) throws Exception &amp;#123;
+        return new String(RSACoder.decryptByPublicKey(Base64.decodeBase64(cipherText), Base64.decodeBase64(key)), StandardCharsets.UTF_8);
+    &amp;#125;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;javascript端&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#javascript端&#34;&gt;#&lt;/a&gt; JavaScript 端&lt;/h2&gt;
+&lt;h3 id=&#34;添加如下依赖-2&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#添加如下依赖-2&#34;&gt;#&lt;/a&gt; 添加如下依赖&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;npm install crypto-js
+npm install node-rsa
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;secretjs&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#secretjs&#34;&gt;#&lt;/a&gt; secret.js&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import CryptoJS from &amp;quot;crypto-js&amp;quot;;
+import NodeRSA from &amp;quot;node-rsa&amp;quot;;
+
+/**
+ * @return &amp;#123;string&amp;#125;
+ */
+function AESEncrypt(plainText, key) &amp;#123;
+    let encodePlainText = CryptoJS.enc.Utf8.parse(plainText);
+    let encodeKey = CryptoJS.enc.Utf8.parse(key);
+    let encryptedData = CryptoJS.AES.encrypt(encodePlainText, encodeKey, &amp;#123;
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    &amp;#125;);
+    return encryptedData.ciphertext.toString(CryptoJS.enc.Base64);
+&amp;#125;
+
+/**
+ * @return &amp;#123;string&amp;#125;
+ */
+function AESDecrypt(cipherText, key) &amp;#123;
+    let encodeKey = CryptoJS.enc.Utf8.parse(key);
+    let decryptedData = CryptoJS.AES.decrypt(cipherText, encodeKey, &amp;#123;
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    &amp;#125;);
+    return decryptedData.toString(CryptoJS.enc.Utf8);
+
+&amp;#125;
+
+const privateKey = new NodeRSA(&amp;quot;-----BEGIN RSA PRIVATE KEY-----\n&amp;quot; +
+    &amp;quot;MIICWwIBAAKBgQCv/YEH5BiuSkblVJ71ZXaiuKaBz5QW5JB05flVEZPX4Kaiw8Cs\n&amp;quot; +
+    &amp;quot;K/TRHCflO8aPvRUwVaExe0ZtsXMQ72ohuhk8eJQayq6DGHc12C8fddBFWo8YFP1j\n&amp;quot; +
+    &amp;quot;XPL68pux6g14hB6vjmSntcsC4SBOcCf+esZKlj/t6LUkp/5othjsag9G9wIDAQAB\n&amp;quot; +
+    &amp;quot;AoGAeaC8xSRZ/lJtLt9NwJEv7YOp57r7QNsUDwZFTAqK375ty7138kWqu742wFGQ\n&amp;quot; +
+    &amp;quot;iBSIiVAUyCrHYNYrjP+5nLeN6jwxY5Z4WprSjTlKisDDxJrcSIKJ49qNNNx6lyiQ\n&amp;quot; +
+    &amp;quot;bOZbMf/WQWxBZE7BTKQ3JykdhRVta/NE+E+4fez2crGr4AECQQDfYShcmOPagGH/\n&amp;quot; +
+    &amp;quot;kKpeOpk5HV5siKQeI6UcXzdFNq+i7nezAZRJK2pTIvizu4e+AlI+/QNDFYpFW0vr\n&amp;quot; +
+    &amp;quot;Rw2Cx5ABAkEAybC9uC2Ry3O1y38Du2ynMVx0TtQhJIWOZ5xs4VR6lR88wGKzjPuQ\n&amp;quot; +
+    &amp;quot;Qa1lK0GysAKzk+8GszSzrKtYCmAbgSNW9wJAcxU3Gh2apiOmWWhKnalK72X2E6yC\n&amp;quot; +
+    &amp;quot;ARUUJ33Wl84IxsRc3thdcSTw7kwCHXbsBDRl8xWe7JzYU8spXdmJWGtAAQJABVSK\n&amp;quot; +
+    &amp;quot;bwelRr80GsCslJN2h7Ntz3eDuLde4BYeOoZFBxPgQyVYoW00jsfKWK5Pzp8Dp/E1\n&amp;quot; +
+    &amp;quot;OB84cGPG299WWr9YWQJALjf2Hjb70DN/en9oQl/FRVK4pSIVy+E9CwWoH7BZWtiS\n&amp;quot; +
+    &amp;quot;6v4tK8q/a08avnaAvkNQIqK3S1DN/OJiyhXdcdNuiw==\n&amp;quot; +
+    &amp;quot;-----END RSA PRIVATE KEY-----&amp;quot;);
+
+const publicKey = new NodeRSA(&amp;quot;-----BEGIN PUBLIC KEY-----\n&amp;quot; +
+    &amp;quot;MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCv/YEH5BiuSkblVJ71ZXaiuKaB\n&amp;quot; +
+    &amp;quot;z5QW5JB05flVEZPX4Kaiw8CsK/TRHCflO8aPvRUwVaExe0ZtsXMQ72ohuhk8eJQa\n&amp;quot; +
+    &amp;quot;yq6DGHc12C8fddBFWo8YFP1jXPL68pux6g14hB6vjmSntcsC4SBOcCf+esZKlj/t\n&amp;quot; +
+    &amp;quot;6LUkp/5othjsag9G9wIDAQAB\n&amp;quot; +
+    &amp;quot;-----END PUBLIC KEY-----&amp;quot;);
+
+privateKey.setOptions(&amp;#123;encryptionScheme: &amp;quot;pkcs1&amp;quot;&amp;#125;);
+publicKey.setOptions(&amp;#123;encryptionScheme: &amp;quot;pkcs1&amp;quot;&amp;#125;);
+
+function RSAEncryptByPublicKey(plainText) &amp;#123;
+    return publicKey.encrypt(plainText, &amp;quot;base64&amp;quot;, &amp;quot;utf8&amp;quot;);
+&amp;#125;
+
+function RSADecryptByPrivateKey(cipherText) &amp;#123;
+    return privateKey.decrypt(cipherText, &amp;quot;utf8&amp;quot;);
+&amp;#125;
+
+function RSAEncryptByPrivateKey(plainText) &amp;#123;
+    return privateKey.encryptPrivate(plainText, &amp;quot;base64&amp;quot;, &amp;quot;utf8&amp;quot;);
+&amp;#125;
+
+function RSADecryptByPublicKey(cipherText) &amp;#123;
+    return publicKey.decryptPublic(cipherText, &amp;quot;utf8&amp;quot;);
+&amp;#125;
+
+export default &amp;#123;
+    AESEncrypt,
+    AESDecrypt,
+    RSAEncryptByPublicKey,
+    RSADecryptByPrivateKey,
+    RSAEncryptByPrivateKey,
+    RSADecryptByPublicKey
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;注意事项&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#注意事项&#34;&gt;#&lt;/a&gt; 注意事项&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;JavaScript 端密钥包括类似 “-----BEGIN PUBLIC KEY-----” 部分。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Java 端密钥不包括类似 “-----BEGIN PUBLIC KEY-----” 部分。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;通过字符串指定密钥长度为所需密钥长度除以 8。（bit-&amp;gt;byte）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;rsa密钥生成方式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#rsa密钥生成方式&#34;&gt;#&lt;/a&gt; RSA 密钥生成方式&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;// 进入openssl
+openssl
+// 生成私钥
+genrsa -out rsa_private_key.pem 1024
+// 生成私钥对应的公钥
+rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+        <category term="编程珠玑" scheme="https://blog.icuxika.com/categories/%E7%BC%96%E7%A8%8B%E7%8F%A0%E7%8E%91/" />
+        <category term="编程珠玑" scheme="https://blog.icuxika.com/tags/%E7%BC%96%E7%A8%8B%E7%8F%A0%E7%8E%91/" />
+        <updated>2019-12-22T16:32:56.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://blog.icuxika.com/2019/09/26/Ubuntu%E4%B8%8BBochs-2-6-9%E7%9A%84%E5%AE%89%E8%A3%85/</id>
+        <title>Ubuntu下Bochs-2.6.9的安装</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2019/09/26/Ubuntu%E4%B8%8BBochs-2-6-9%E7%9A%84%E5%AE%89%E8%A3%85/"/>
+        <content type="html">&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;span&gt;h&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;apt&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;install&lt;/span&gt; build-essential&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;apt-get&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;install&lt;/span&gt; libx11-dev&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;apt-get&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;install&lt;/span&gt; libxrandr-dev&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;apt-get&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;install&lt;/span&gt; libgtk2.0-dev&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;./configure --enable-debugger --enable-disasm --enable-iodebug --enable-x86-debugger --with-x --with-x11 &lt;span class=&#34;token assign-left variable&#34;&gt;LIBS&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#39;-lX11&#39;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;make&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;cp&lt;/span&gt; bochs bochsdbg&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;make&lt;/span&gt; &lt;span class=&#34;token function&#34;&gt;install&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+        <category term="一个操作系统的实现" scheme="https://blog.icuxika.com/categories/%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" />
+        <category term="操作系统" scheme="https://blog.icuxika.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" />
+        <updated>2019-09-26T03:10:38.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://blog.icuxika.com/2019/01/14/%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0MBR/</id>
+        <title>简单实现MBR</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2019/01/14/%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0MBR/"/>
+        <content type="html">&lt;h2 id=&#34;关于&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#关于&#34;&gt;#&lt;/a&gt; 关于&lt;/h2&gt;
+&lt;p&gt;上一篇文章介绍了在在&lt;strong&gt; Windows 10&lt;/strong&gt; 下实现一个操作系统需要部署的环境。本文就正式开始实现一个操作系统了。&lt;/p&gt;
+&lt;h2 id=&#34;这篇文章讲了什么&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#这篇文章讲了什么&#34;&gt;#&lt;/a&gt; 这篇文章讲了什么？&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;计算机启动过程的大致介绍&lt;/li&gt;
+&lt;li&gt;实现 MBR&lt;/li&gt;
+&lt;li&gt;Windows 10 下 Bochs-2.6.9 的配置与运行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;计算机的启动过程&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#计算机的启动过程&#34;&gt;#&lt;/a&gt; 计算机的启动过程&lt;/h3&gt;
+&lt;p&gt;当我们按下计算机的&lt;strong&gt; Power button&lt;/strong&gt; 后，首先运行的软件是&lt;strong&gt; BIOS&lt;/strong&gt;，全称为&lt;strong&gt; Basic Input &amp;amp; Output System&lt;/strong&gt;，即基本输入输出系统。由于&lt;strong&gt; BIOS&lt;/strong&gt; 是第一个运行的软件，所以它只能由硬件来加载。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;BIOS&lt;/strong&gt; 启动后，便开始检测内存、显卡等外设信息，当检测通过，并初始化好硬件后，它的最后一项工作是校验启动盘中位于&lt;strong&gt; 0&lt;/strong&gt; 盘&lt;strong&gt; 0&lt;/strong&gt; 道&lt;strong&gt; 1&lt;/strong&gt; 扇区的内容。当检测到此扇区末尾的两个字节分别为&lt;strong&gt; 0x55&lt;/strong&gt; 和&lt;strong&gt; 0xaa&lt;/strong&gt;，&lt;strong&gt;BIOS&lt;/strong&gt; 便认为此扇区中确实存在可执行的程序（此程序就是&lt;strong&gt; MBR&lt;/strong&gt;），然后加载到物理地址&lt;strong&gt; 0x7c00&lt;/strong&gt;，随后跳转到此地址上，继续执行。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;MBR，主引导记录，全称是 Main Boot Record。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;实现mbr&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#实现mbr&#34;&gt;#&lt;/a&gt; 实现 MBR&lt;/h2&gt;
+&lt;h3 id=&#34;代码如下eosbootmbrs&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#代码如下eosbootmbrs&#34;&gt;#&lt;/a&gt; 代码如下（&lt;strong&gt;E:\OS\boot\mbr.S&lt;/strong&gt;）&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;; 主引导程序
+; -----------------------------------------------
+SECTION MBR vstart=0x7c00
+    mov ax, cs
+    mov ds, ax
+    mov es, ax
+    mov ss, ax
+    mov fs, ax
+    mov sp, 0x7c00
+
+; 清屏利用 0x06 号功能，上卷全部行，则可清屏。
+; -----------------------------------------------
+; INT 0x10 功能号 0x06 功能描述：上卷窗口
+; -----------------------------------------------
+; 输入：
+; AH 功能号 = 0x06
+; AL = 上卷的行数（如果为0，表示全部）
+; BH = 上卷行属性
+; (CL, CH) = 窗口左上角的（X，Y）位置
+; (DL, DH) = 窗口右下角的（X，Y）位置
+; 无返回值：
+    mov ax, 0x600
+    mov bx, 0x700
+    mov cx, 0                     ; 左上角：（0，0）
+    mov dx, 0x184f                ; 右下角：（80，25）
+                                  ; VGA文本模式中，一行只能容纳80个字符，共25行
+                                  ; 下标从0开始，所以0x18=24，0x4f=79
+    int 0x10                      ; int 0x10
+
+;   获取光标位置
+;   .get_cursor 获取当前光标位置，在光标位置处打印字符
+    mov ah, 3                     ; 输入：3号子功能是获取光标位置，需要存入ah寄存器
+    mov bh, 0                     ; bh寄存器存储的是带获取光标的页号
+
+    int 0x10                      ; 输出： ch=光标开始行，cl=光标结束行
+                                  ; dh=光标所在行号，dl=光标所在列号
+
+;   获取光标位置结束
+
+;   打印字符串
+;   还是用10h中断，不过这次调用13号子功能打印字符串
+    mov ax, message
+    mov bp, ax                    ; es:bp 为串首地址，es此时同cs一致
+                                  ; 开头时已经为sreg初始化
+
+;   光标位置要用到dx寄存器中内容，cx中的光标位置可忽略
+    mov cx, 5                     ; cx为串长度，不包括结束符0的字符个数
+    mov ax, 0x1301                ; 子功能号13显示字符及属性，要存入ah寄存器
+                                  ; al设置写字符方式ah=01：显示字符串，光标跟随移动
+    mov bx, 0x2                   ; bh中存储要显示的页号，此处是第0页
+                                  ; bl中是字符属性，属性黑底绿字（bl=02h）
+    int 0x10                      ; 执行BIOS 0x10号中断
+;   打印字符串结束
+
+    jmp $                         ; 是程序悬停在此
+
+    message db &amp;quot;1 MBR&amp;quot;
+    times 510-($-$$) db 0
+    db 0x55, 0xaa
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;使用nasm编译mbrs&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#使用nasm编译mbrs&#34;&gt;#&lt;/a&gt; 使用 nasm 编译 mbr.S&lt;/h3&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;nasm -o mbr.bin mbr.S&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h3 id=&#34;验证mbrbin的文件大小是否512字节&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#验证mbrbin的文件大小是否512字节&#34;&gt;#&lt;/a&gt; 验证 mbr.bin 的文件大小是否 512 字节&lt;/h3&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token function&#34;&gt;ls&lt;/span&gt; -lb mbr.bin&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;blockquote&gt;
+&lt;p&gt;以上命令都在&lt;strong&gt; Cmder&lt;/strong&gt; 中运行。&lt;/p&gt;
+&lt;p&gt;接下来，便是要用 Bochs 测试一下&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;bochs-269的配置与运行&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#bochs-269的配置与运行&#34;&gt;#&lt;/a&gt; Bochs-2.6.9 的配置与运行&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;想要在&lt;strong&gt; Bochs&lt;/strong&gt; 中成功模拟 MBR 的执行，需要对&lt;strong&gt; Bochs&lt;/strong&gt; 进行如下三步配置&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将&lt;strong&gt; Bochs&lt;/strong&gt; 根目录下&lt;strong&gt; bochsrc-sample.txt&lt;/strong&gt; 在同位置复制黏贴一份，改名为&lt;strong&gt; bochsrc-sample-test.bxrc&lt;/strong&gt;，在&lt;strong&gt; Visual Studio Code&lt;/strong&gt; 中对其进行编辑，内容如下。&lt;/li&gt;
+&lt;li&gt;借助&lt;strong&gt; Bochs&lt;/strong&gt; 根目录下&lt;strong&gt; bximage.exe&lt;/strong&gt; 初始化一个&lt;strong&gt; 1.44M&lt;/strong&gt; 的软盘&lt;/li&gt;
+&lt;li&gt;借助&lt;strong&gt; Bochs&lt;/strong&gt; 根目录下&lt;strong&gt; bximage.exe&lt;/strong&gt; 初始化一个&lt;strong&gt; 60M&lt;/strong&gt; 的硬盘&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;bochs初始化配置&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#bochs初始化配置&#34;&gt;#&lt;/a&gt; Bochs 初始化配置&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;bochsrc-sample-test.bxrc&lt;/strong&gt;（&lt;strong&gt;D:\Program Files\Bochs-2.6.9\bochsrc-sample-test.bxrc&lt;/strong&gt;）内容如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# &amp;quot;#&amp;quot;是注释(comment)
+
+# 分配内存megs参数[megs: 128 分配128MB内存,最大是2048]不被赞成使用
+# 使用memory替代
+# guest 分配给模拟器客户端的内存大小
+# host  从guest分配给主机的内存大小,实际分配可能比guest小,如果用到了
+# 更多的内存将会动态加入,但访问不能大于guest内存大小.
+# memory 没有内存大小限制,限制的是CPU可访问内存最大大小(即CPU地址总线宽度)
+memory: guest=32,host=32
+
+# 配置ROM BIOS,ROM BIOS将控制计算机首次启动的功能(BIOS的固件)
+# file:ROM BIOS二进制文件路径,这个参数下面不再解说
+romimage: file=BIOS-bochs-latest
+
+# VGA ROM 的映象文件  一般是被映射到内存地址0xC0000处,相当于我们的显卡
+vgaromimage: file=VGABIOS-elpin-2.40
+
+#使用软驱 floppy_ ,&amp;quot;_&amp;quot;可以是a,b,c,d...
+#例子:软驱a,b 大小为1.44MB  
+# 参数:status 有两种分别为
+# inserted（软盘插入软驱），ejected（软盘未插入软驱）。
+floppya: image=&amp;quot;fd144.img&amp;quot;, status=inserted
+
+
+# ata是一个接口 可以是ata0,ata1,ata2,ata3,用来控制硬盘(disk)和光驱(cdrom)
+#ioaddr1 分配主盘的io端口地址 ..... 
+#ioaddr2 分配从盘的io端口地址 .....
+#irg     中断请求号(当发生中断时,对应的中断向量)
+#学过硬盘端口读写的朋友应该知道主盘对应端口(0x1f0~0x1f7)
+#从盘对应对口(0x3f0~0x3f7)
+ata0: enabled=1,ioaddr1=0x1f0, ioaddr2=0x3f0,irq=14
+
+#ata[0-3]-master 定义设备类型和特征 
+#type       连接设备的类型[disk(硬盘)|cdrom(光驱)]
+#path       虚拟镜像路径(我用的是virtualbox虚拟机的虚拟硬盘)
+#cylinders  柱面数(type为硬盘是才有这个参数)
+#heads      每柱面拥有的磁道数(type为硬盘是才有这个参数)
+#spt        没磁道的扇区数量(type为硬盘是才有这个参数)
+ata0-master: type=disk, path=&amp;quot;hd60M.img&amp;quot;, mode=flat
+
+#设置启动顺序 1.硬盘,2.软驱(配置过BIOS启动项的朋友肯定知道)
+boot: disk,floppy
+
+
+#日志输出 log: 日志路径
+log: bochslog.txt
+
+#设置鼠标不可用 ,如果enabled不为0那么bochs会发送鼠标事件到仿真机上
+#因为是字符界面,无需鼠标
+mouse: enabled=0
+
+#设置键盘
+#type 键盘类型
+#keymap 键盘映射文件
+keyboard: type=mf,keymap=keymaps/x11-pc-us.map
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;其中软盘&lt;strong&gt; fd144.img&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;floppya: image=&amp;quot;fd144.img&amp;quot;, status=inserted
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;和硬盘&lt;strong&gt; hd60M.img&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ata0-master: type=disk, path=&amp;quot;hd60M.img&amp;quot;, mode=flat
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;生成方式&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;D:&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;Program Files&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;Bochs-2.6.9&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;λ bximage.exe&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                                bximage&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  Disk Image Creation / Conversion / Resize and Commit Tool &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt; Bochs&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;         &lt;span class=&#34;token variable&#34;&gt;$Id&lt;/span&gt;&lt;span class=&#34;token builtin class-name&#34;&gt;:&lt;/span&gt; bximage.cc &lt;span class=&#34;token number&#34;&gt;13069&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;2017&lt;/span&gt;-02-12 &lt;span class=&#34;token number&#34;&gt;16&lt;/span&gt;:51:52Z vruppert $&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;. Create new floppy or hard disk image&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;. Convert hard disk image to other &lt;span class=&#34;token function&#34;&gt;format&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;mode&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;3&lt;/span&gt;. Resize hard disk image&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;4&lt;/span&gt;. Commit &lt;span class=&#34;token string&#34;&gt;&#39;undoable&#39;&lt;/span&gt; redolog to base image&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;13&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;5&lt;/span&gt;. Disk image info&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;14&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;15&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;. Quit&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;16&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;17&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Please choose one &lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;18&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;19&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Create image&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;20&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;21&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Do you want to create a floppy disk image or a hard disk image?&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;22&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Please &lt;span class=&#34;token builtin class-name&#34;&gt;type&lt;/span&gt; hd or fd. &lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;hd&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; fd&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;23&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;24&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Choose the size of floppy disk image to create.&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;25&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Please &lt;span class=&#34;token builtin class-name&#34;&gt;type&lt;/span&gt; 160k, 180k, 320k, 360k, 720k, &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;.2M, &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;.44M, &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;.68M, &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;.72M, or &lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;.88M.&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;26&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt; &lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;.44M&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;27&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;28&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;What should be the name of the image?&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;29&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;a.img&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; fd144.img&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;30&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;31&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Creating floppy image &lt;span class=&#34;token string&#34;&gt;&#39;fd144.img&#39;&lt;/span&gt; with &lt;span class=&#34;token number&#34;&gt;2880&lt;/span&gt; sectors&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;32&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;33&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;The following line should appear &lt;span class=&#34;token keyword&#34;&gt;in&lt;/span&gt; your bochsrc:&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;34&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  floppya: &lt;span class=&#34;token assign-left variable&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;fd144.img&#34;&lt;/span&gt;, &lt;span class=&#34;token assign-left variable&#34;&gt;status&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;inserted&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;35&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;The line is stored &lt;span class=&#34;token keyword&#34;&gt;in&lt;/span&gt; your windows clipboard, use CTRL-V to &lt;span class=&#34;token function&#34;&gt;paste&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;36&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;37&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Press any key to &lt;span class=&#34;token builtin class-name&#34;&gt;continue&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;38&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;39&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;D:&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;Program Files&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;Bochs-2.6.9&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;40&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;λ bximage.exe&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;41&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;42&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                                bximage&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;43&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  Disk Image Creation / Conversion / Resize and Commit Tool &lt;span class=&#34;token keyword&#34;&gt;for&lt;/span&gt; Bochs&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;44&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;         &lt;span class=&#34;token variable&#34;&gt;$Id&lt;/span&gt;&lt;span class=&#34;token builtin class-name&#34;&gt;:&lt;/span&gt; bximage.cc &lt;span class=&#34;token number&#34;&gt;13069&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;2017&lt;/span&gt;-02-12 &lt;span class=&#34;token number&#34;&gt;16&lt;/span&gt;:51:52Z vruppert $&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;45&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;46&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;47&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;. Create new floppy or hard disk image&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;48&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;2&lt;/span&gt;. Convert hard disk image to other &lt;span class=&#34;token function&#34;&gt;format&lt;/span&gt; &lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;mode&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;49&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;3&lt;/span&gt;. Resize hard disk image&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;50&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;4&lt;/span&gt;. Commit &lt;span class=&#34;token string&#34;&gt;&#39;undoable&#39;&lt;/span&gt; redolog to base image&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;51&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;5&lt;/span&gt;. Disk image info&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;52&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;53&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;. Quit&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;54&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;55&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Please choose one &lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;56&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;57&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Create image&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;58&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;59&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Do you want to create a floppy disk image or a hard disk image?&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;60&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Please &lt;span class=&#34;token builtin class-name&#34;&gt;type&lt;/span&gt; hd or fd. &lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;hd&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;61&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;62&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;What kind of image should I create?&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;63&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Please &lt;span class=&#34;token builtin class-name&#34;&gt;type&lt;/span&gt; flat, sparse, growing, vpc or vmware4. &lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;flat&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;64&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;65&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Enter the hard disk size &lt;span class=&#34;token keyword&#34;&gt;in&lt;/span&gt; megabytes, between &lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt; and &lt;span class=&#34;token number&#34;&gt;8257535&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;66&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;60&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;67&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;68&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;What should be the name of the image?&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;69&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;c.img&lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; hd60M.img&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;70&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;71&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Creating hard disk image &lt;span class=&#34;token string&#34;&gt;&#39;hd60M.img&#39;&lt;/span&gt; with &lt;span class=&#34;token assign-left variable&#34;&gt;CHS&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;121&lt;/span&gt;/16/63&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;72&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;73&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;The following line should appear &lt;span class=&#34;token keyword&#34;&gt;in&lt;/span&gt; your bochsrc:&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;74&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;  ata0-master: &lt;span class=&#34;token assign-left variable&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;disk, &lt;span class=&#34;token assign-left variable&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;hd60M.img&#34;&lt;/span&gt;, &lt;span class=&#34;token assign-left variable&#34;&gt;mode&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;flat&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;75&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token punctuation&#34;&gt;(&lt;/span&gt;The line is stored &lt;span class=&#34;token keyword&#34;&gt;in&lt;/span&gt; your windows clipboard, use CTRL-V to &lt;span class=&#34;token function&#34;&gt;paste&lt;/span&gt;&lt;span class=&#34;token punctuation&#34;&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;76&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;77&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;Press any key to &lt;span class=&#34;token builtin class-name&#34;&gt;continue&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;78&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;79&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;D:&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;Program Files&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;Bochs-2.6.9&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;80&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;λ&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;h3 id=&#34;在bochs中模拟运行mbr&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#在bochs中模拟运行mbr&#34;&gt;#&lt;/a&gt; 在 Bochs 中模拟运行 MBR&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;在这里要做两件事
+&lt;ul&gt;
+&lt;li&gt;将&lt;strong&gt; mbr.bin&lt;/strong&gt; 写入到硬盘&lt;strong&gt; hd60M.img&lt;/strong&gt; 中&lt;/li&gt;
+&lt;li&gt;指定配置文件运行 Bochs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;E:&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;OS&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;boot&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;λ &lt;span class=&#34;token function&#34;&gt;ls&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;mbr.S  mbr.bin&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;E:&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;OS&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;boot&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;λ &lt;span class=&#34;token function&#34;&gt;dd&lt;/span&gt; &lt;span class=&#34;token assign-left variable&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;mbr.bin &lt;span class=&#34;token assign-left variable&#34;&gt;of&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token string&#34;&gt;&#34;D:\Program Files\Bochs-2.6.9\hd60M.img&#34;&lt;/span&gt; &lt;span class=&#34;token assign-left variable&#34;&gt;bs&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;512&lt;/span&gt; &lt;span class=&#34;token assign-left variable&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;token assign-left variable&#34;&gt;conv&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;=&lt;/span&gt;notrunc&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;+0 records &lt;span class=&#34;token keyword&#34;&gt;in&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;1&lt;/span&gt;+0 records out&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token number&#34;&gt;512&lt;/span&gt; bytes copied, &lt;span class=&#34;token number&#34;&gt;0.0100447&lt;/span&gt; s, &lt;span class=&#34;token number&#34;&gt;51.0&lt;/span&gt; kB/s&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;E:&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;OS&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;boot&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;12&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;λ&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在 Linux 下，启动 Bochs 后，输入字符 c 后，再输入回车执行。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;figcaption data-lang=&#34;bash&#34;&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td data-num=&#34;1&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;D:&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;Program Files&lt;span class=&#34;token punctuation&#34;&gt;\&lt;/span&gt;Bochs-2.6.9&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;2&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;λ bochs -f &lt;span class=&#34;token string&#34;&gt;&#34;bochsrc-sample-test.bxrc&#34;&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;3&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;4&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                       Bochs x86 Emulator &lt;span class=&#34;token number&#34;&gt;2.6&lt;/span&gt;.9&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;5&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;               Built from SVN snapshot on April &lt;span class=&#34;token number&#34;&gt;9&lt;/span&gt;, &lt;span class=&#34;token number&#34;&gt;2017&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;6&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;                  Compiled on Apr  &lt;span class=&#34;token number&#34;&gt;9&lt;/span&gt; &lt;span class=&#34;token number&#34;&gt;2017&lt;/span&gt; at 09:32:13&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;7&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;span class=&#34;token operator&#34;&gt;==&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;8&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;00000000000i&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;      &lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; reading configuration from bochsrc-sample-test.bxrc&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;9&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;00000000000e&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;      &lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; bochsrc-sample-test.bxrc:39: ataX-master/slave CHS &lt;span class=&#34;token builtin class-name&#34;&gt;set&lt;/span&gt; to &lt;span class=&#34;token number&#34;&gt;0&lt;/span&gt;/0/0 - autodetection enabled&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;10&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;00000000000i&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;      &lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; installing win32 module as the Bochs GUI&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td data-num=&#34;11&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;pre&gt;00000000000i&lt;span class=&#34;token punctuation&#34;&gt;[&lt;/span&gt;      &lt;span class=&#34;token punctuation&#34;&gt;]&lt;/span&gt; using log &lt;span class=&#34;token function&#34;&gt;file&lt;/span&gt; bochslog.txt&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;p&gt;&lt;img data-src=&#34;/2019/01/14/%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0MBR/1.png&#34; class=&#34;&#34; title=&#34;运行成功截图&#34;&gt;&lt;/p&gt;
+</content>
+        <category term="一个操作系统的实现" scheme="https://blog.icuxika.com/categories/%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" />
+        <category term="操作系统" scheme="https://blog.icuxika.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" />
+        <updated>2019-01-14T05:37:43.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://blog.icuxika.com/2019/01/14/%E5%9C%A8Windows-10%E4%B8%8B%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83/</id>
+        <title>在Windows-10下部署环境</title>
+        <link rel="alternate" href="https://blog.icuxika.com/2019/01/14/%E5%9C%A8Windows-10%E4%B8%8B%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83/"/>
+        <content type="html">&lt;h2 id=&#34;关于&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#关于&#34;&gt;#&lt;/a&gt; 关于&lt;/h2&gt;
+&lt;p&gt;本系列文章是建立在&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9ib29rLmRvdWJhbi5jb20vc3ViamVjdC8yNjc0NTE1Ni8=&#34;&gt;《操作系统真象还原》&lt;/span&gt;一书的基础上的。&lt;/p&gt;
+&lt;h2 id=&#34;工具准备&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#工具准备&#34;&gt;#&lt;/a&gt; 工具准备&lt;/h2&gt;
+&lt;h3 id=&#34;汇编语言编译器nasm&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#汇编语言编译器nasm&#34;&gt;#&lt;/a&gt; 汇编语言编译器：NASM&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;下载地址：&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cubmFzbS51cy8=&#34;&gt;NASM&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;windows下终端cmder&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#windows下终端cmder&#34;&gt;#&lt;/a&gt; Windows 下终端：Cmder&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;下载地址：&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL2NtZGVyLm5ldC8=&#34;&gt;Cmder&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;x86硬件平台模拟器bochs-269&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#x86硬件平台模拟器bochs-269&#34;&gt;#&lt;/a&gt; x86 硬件平台模拟器：Bochs-2.6.9&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;下载地址：&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9zb3VyY2Vmb3JnZS5uZXQvcHJvamVjdHMvYm9jaHMvZmlsZXMv&#34;&gt;Bochs&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;一个编辑器visual-studio-code&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#一个编辑器visual-studio-code&#34;&gt;#&lt;/a&gt; 一个编辑器：Visual Studio Code&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;下载地址：&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9jb2RlLnZpc3VhbHN0dWRpby5jb20v&#34;&gt;Visual Studio Code&lt;/span&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;环境配置&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#环境配置&#34;&gt;#&lt;/a&gt; 环境配置&lt;/h2&gt;
+&lt;h3 id=&#34;nasm&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#nasm&#34;&gt;#&lt;/a&gt; NASM&lt;/h3&gt;
+&lt;p&gt;这方面暂时不说什么。&lt;/p&gt;
+&lt;h3 id=&#34;cmder&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#cmder&#34;&gt;#&lt;/a&gt; Cmder&lt;/h3&gt;
+&lt;p&gt;官网提供了&lt;strong&gt; Mini&lt;/strong&gt; 和&lt;strong&gt; Full&lt;/strong&gt; 两个版本的下载链接，其中&lt;strong&gt; Full&lt;/strong&gt; 版本内置了&lt;strong&gt; Git for Windows&lt;/strong&gt; 工具。只要将&lt;strong&gt; Cmder&lt;/strong&gt; 下&lt;strong&gt; Git for Windows&lt;/strong&gt; 工具对应的目录添加到环境变量即可使用&lt;strong&gt; git&lt;/strong&gt; 命令以及一些常见的&lt;strong&gt; Linux&lt;/strong&gt; 命令 ，这其中就包含后面要用到的&lt;strong&gt; Linux&lt;/strong&gt; 下用于磁盘操作的命令&lt;strong&gt; dd&lt;/strong&gt;。除此之外，&lt;strong&gt;Cmder&lt;/strong&gt; 下还藏着一个&lt;strong&gt; GCC&lt;/strong&gt; 编译器，如果要使用的话，需要将对应的目录添加到环境变量。&lt;/p&gt;
+&lt;h3 id=&#34;bochs&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#bochs&#34;&gt;#&lt;/a&gt; Bochs&lt;/h3&gt;
+&lt;p&gt;这个也后面再说吧。&lt;/p&gt;
+&lt;h3 id=&#34;visual-studio-code&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#visual-studio-code&#34;&gt;#&lt;/a&gt; Visual Studio Code&lt;/h3&gt;
+&lt;p&gt;这个就不说了。&lt;/p&gt;
+</content>
+        <category term="一个操作系统的实现" scheme="https://blog.icuxika.com/categories/%E4%B8%80%E4%B8%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E7%8E%B0/" />
+        <category term="操作系统" scheme="https://blog.icuxika.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" />
+        <updated>2019-01-14T05:36:10.000Z</updated>
+    </entry>
+</feed>
